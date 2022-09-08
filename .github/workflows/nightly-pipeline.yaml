@@ -1,0 +1,17 @@
+name: Nightly RAPIDS Pipeline
+
+on:
+  workflow_dispatch:
+  # enable cron once everything is working correctly
+  # schedule:
+  #   - cron: ''
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rmm:
+    uses: rapidsai/rmm/.github/workflows/workflow.yaml@gha
+    with:
+      build_type: nightly
