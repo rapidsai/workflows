@@ -12,6 +12,6 @@ concurrency:
 
 jobs:
   rmm:
-    uses: rapidsai/rmm/.github/workflows/workflow.yaml@gha
+    uses: rapidsai/rmm/.github/workflows/nightly-workflow.yaml@gha
     with:
-      build_type: nightly
+      REF: gha
