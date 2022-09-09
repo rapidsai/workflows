@@ -16,9 +16,3 @@ jobs:
     secrets: inherit
     with:
       REF: gha
-  rmm2:
-    needs: rmm
-    uses: rapidsai/rmm/.github/workflows/nightly-workflow.yaml@gha
-    secrets: inherit
-    with:
-      REF: gha
