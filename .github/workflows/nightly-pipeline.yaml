@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   rmm:
-    uses: rapidsai/rmm/.github/workflows/nightly-workflow.yaml@gha
+    uses: rapidsai/rmm/.github/workflows/nightly-workflow.yaml@branch-22.10
     secrets: inherit
     with:
-      REF: gha
+      REF: branch-22.10
