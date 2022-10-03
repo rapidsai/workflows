@@ -11,8 +11,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  get-shas:
+    uses: ./.github/workflows/get-shas.yaml
+    secrets: inherit
+    with:
+      branch: branch-22.10
+      repos: >-
+        rapidsai/rmm
+        rapidsai/cudf
   rmm:
+    needs: [get-shas]
     uses: rapidsai/rmm/.github/workflows/nightly-workflow.yaml@branch-22.10
     secrets: inherit
     with:
-      REF: branch-22.10
+      branch: ${{ fromJSON(needs.get-shas.outputs.shas).branch }}
+      sha: ${{ fromJSON(needs.get-shas.outputs.shas).shas.rmm }}
