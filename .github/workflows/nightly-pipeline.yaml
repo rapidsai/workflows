@@ -21,7 +21,7 @@ jobs:
         rapidsai/cudf
   rmm:
     needs: [get-shas]
-    uses: rapidsai/rmm/.github/workflows/nightly-workflow.yaml@branch-22.10
+    uses: rapidsai/rmm/.github/workflows/branch-workflow.yaml@update-nightly-workflow
     secrets: inherit
     with:
       branch: ${{ fromJSON(needs.get-shas.outputs.shas).branch }}
