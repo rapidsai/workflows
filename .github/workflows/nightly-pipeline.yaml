@@ -21,7 +21,7 @@ jobs:
         rapidsai/cudf
   rmm:
     needs: get-run-info
-    uses: rapidsai/rmm/.github/workflows/branch-workflow.yaml@update-nightly-workflow
+    uses: rapidsai/rmm/.github/workflows/branch.yaml@update-nightly-workflow
     secrets: inherit
     with:
       branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
