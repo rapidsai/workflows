@@ -31,7 +31,7 @@ jobs:
       date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
       sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
   rmm-tests:
-    needs: rmm-build
+    needs: [get-run-info, rmm-build]
     uses: rapidsai/rmm/.github/workflows/test.yaml@update-nightly-workflow
     secrets: inherit
     with:
