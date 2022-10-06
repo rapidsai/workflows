@@ -6,6 +6,9 @@ on:
   # schedule:
   #   - cron: ''
 
+# the static `nightly` string is needed to differentiate
+# this concurrency config from similar configs that exist
+# in called workflows, which causes problems
 concurrency:
   group: nightly-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
