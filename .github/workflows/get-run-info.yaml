@@ -1,0 +1,53 @@
+on:
+  workflow_call:
+    inputs:
+      branch:
+        type: string
+      repos:
+        type: string
+    outputs:
+      obj:
+        description: "A JSON object which includes the relevant information for a particular workflow run."
+        value: ${{ jobs.run.outputs.obj }}
+
+# The output object looks like this:
+# {
+#   "branch": "branch-22.10",
+#   "date": "2022-09-01",
+#   "shas": {
+#     "rmm": "8a3a552e07fa8254c54804addcab103aea89f985",
+#     "cudf": "dfd3d89392fa4710752e3067b16fa9a2edb28174"
+#   }
+# }
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    outputs:
+      obj: ${{ steps.get-obj.outputs.obj }}
+    env:
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Get Run Info
+        id: get-obj
+        env:
+          INPUTS_CONTEXT: ${{ toJson(inputs) }}
+        run: |
+          export REPOS=$(echo "${{ inputs.repos }}" | jq -Rc 'split(" ")')
+
+          export SHAs='{}'
+          for REPO in $(jq -nr '(env.REPOS|fromjson) | .[]'); do
+            export JUST_REPO=${REPO##*/} # removes GH organization
+            export SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${{ inputs.branch }}")
+            SHAs=$(jq -nc '(env.SHAs|fromjson) + {(env.JUST_REPO): env.SHA}')
+          done
+
+          OBJ=$(
+            jq -nc '{
+              "branch": "${{ inputs.branch }}",
+              "shas": (env.SHAs|fromjson),
+              "date": now | strftime("%F"),
+            }'
+          )
+          echo "${OBJ}"
+          echo "::set-output name=obj::${OBJ}"
