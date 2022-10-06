@@ -22,9 +22,17 @@ jobs:
       repos: >-
         rapidsai/rmm
         rapidsai/cudf
-  rmm:
+  rmm-build:
     needs: get-run-info
-    uses: rapidsai/rmm/.github/workflows/branch.yaml@update-nightly-workflow
+    uses: rapidsai/rmm/.github/workflows/build.yaml@update-nightly-workflow
+    secrets: inherit
+    with:
+      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
+  rmm-tests:
+    needs: rmm-build
+    uses: rapidsai/rmm/.github/workflows/test.yaml@update-nightly-workflow
     secrets: inherit
     with:
       branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
