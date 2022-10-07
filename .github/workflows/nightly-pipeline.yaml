@@ -2,9 +2,8 @@ name: Nightly RAPIDS Pipeline
 
 on:
   workflow_dispatch:
-  # enable cron once everything is working correctly
-  # schedule:
-  #   - cron: ''
+  schedule:
+    - cron: "0 5 * * *" # 5am UTC / 1am EST
 
 # the static `nightly` string is needed to differentiate
 # this concurrency config from similar configs that exist
