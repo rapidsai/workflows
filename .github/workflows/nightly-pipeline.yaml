@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
-      branch: branch-22.10
+      branch: branch-22.12
       repos: >-
         rapidsai/rmm
         rapidsai/cudf
