@@ -50,4 +50,4 @@ jobs:
             }'
           )
           echo "${OBJ}"
-          echo "::set-output name=obj::${OBJ}"
+          echo "obj=${OBJ}" >> ${GITHUB_OUTPUT}
