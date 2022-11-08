@@ -1,4 +1,4 @@
-name: Nightly RAPIDS Pip Wheel Pipeline
+name: Stable RAPIDS Pip Wheel Pipeline
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
 # this concurrency config from similar configs that exist
 # in called workflows, which causes problems
 concurrency:
-  group: nightly-wheels-${{ github.workflow }}-${{ github.ref }}
+  group: stable-wheels-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
