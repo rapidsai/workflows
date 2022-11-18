@@ -22,15 +22,14 @@ jobs:
     uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
-      branch: pull-request/1148
+      branch: branch-22.12
       repos: >-
         rapidsai/rmm
 
   rmm-wheel:
     needs: get-run-info
 
-    # our PR open against branch-22.12: https://github.com/rapidsai/rmm/pull/1148
-    uses: rapidsai/rmm/.github/workflows/wheels.yml@pull-request/1148
+    uses: rapidsai/rmm/.github/workflows/wheels.yml@branch-22.12
     secrets: inherit
     with:
       versioneer-override: ${{ inputs.rmm-versioneer-override }}
