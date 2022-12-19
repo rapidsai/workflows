@@ -24,7 +24,7 @@ jobs:
     uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
-      branch: branch-22.12
+      branch: branch-23.02
       repos: >-
         rapidsai/rmm
         rapidsai/cudf
@@ -35,7 +35,7 @@ jobs:
   rmm-wheel:
     needs: get-run-info
 
-    uses: rapidsai/rmm/.github/workflows/wheels.yml@branch-22.12
+    uses: rapidsai/rmm/.github/workflows/wheels.yml@branch-23.02
     secrets: inherit
     with:
       versioneer-override: ${{ inputs.rapids-versioneer-override }}
@@ -47,7 +47,7 @@ jobs:
   cudf-wheel:
     needs: get-run-info
 
-    uses: rapidsai/cudf/.github/workflows/wheels.yml@branch-22.12
+    uses: rapidsai/cudf/.github/workflows/wheels.yml@branch-23.02
     secrets: inherit
     with:
       versioneer-override: ${{ inputs.rapids-versioneer-override }}
@@ -59,7 +59,7 @@ jobs:
   raft-wheel:
     needs: get-run-info
 
-    uses: rapidsai/raft/.github/workflows/wheels.yml@branch-22.12
+    uses: rapidsai/raft/.github/workflows/wheels.yml@branch-23.02
     secrets: inherit
     with:
       versioneer-override: ${{ inputs.rapids-versioneer-override }}
@@ -71,7 +71,7 @@ jobs:
   cugraph-wheel:
     needs: get-run-info
 
-    uses: rapidsai/cugraph/.github/workflows/wheels.yml@branch-22.12
+    uses: rapidsai/cugraph/.github/workflows/wheels.yml@branch-23.02
     secrets: inherit
     with:
       versioneer-override: ${{ inputs.rapids-versioneer-override }}
@@ -83,7 +83,7 @@ jobs:
   cuml-wheel:
     needs: get-run-info
 
-    uses: rapidsai/cuml/.github/workflows/wheels.yml@branch-22.12
+    uses: rapidsai/cuml/.github/workflows/wheels.yml@branch-23.02
     secrets: inherit
     with:
       versioneer-override: ${{ inputs.rapids-versioneer-override }}
@@ -97,14 +97,14 @@ jobs:
     uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
-      branch: branch-0.29
+      branch: branch-0.30
       repos: >-
         rapidsai/ucx-py
 
   ucx-py-wheel:
     needs: get-run-info-ucx-py
 
-    uses: rapidsai/ucx-py/.github/workflows/wheels.yml@branch-0.29
+    uses: rapidsai/ucx-py/.github/workflows/wheels.yml@branch-0.30
     secrets: inherit
     with:
       versioneer-override: ${{ inputs.ucx-versioneer-override }}
