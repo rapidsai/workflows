@@ -17,13 +17,13 @@ jobs:
     uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
-      branch: branch-22.12
+      branch: branch-23.02
       repos: >-
         rapidsai/rmm
         rapidsai/cudf
   rmm-build:
     needs: get-run-info
-    uses: rapidsai/rmm/.github/workflows/build.yaml@branch-22.12
+    uses: rapidsai/rmm/.github/workflows/build.yaml@branch-23.02
     secrets: inherit
     with:
       branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
@@ -31,7 +31,7 @@ jobs:
       sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
   rmm-tests:
     needs: [get-run-info, rmm-build]
-    uses: rapidsai/rmm/.github/workflows/test.yaml@branch-22.12
+    uses: rapidsai/rmm/.github/workflows/test.yaml@branch-23.02
     secrets: inherit
     with:
       branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
