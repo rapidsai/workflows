@@ -37,3 +37,19 @@ jobs:
       branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
       date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
       sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
+  cudf-build:
+    needs: [get-run-info, rmm-build]
+    uses: rapidsai/cudf/.github/workflows/build.yaml@branch-23.02
+    secrets: inherit
+    with:
+      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
+  cudf-tests:
+    needs: [get-run-info, cudf-build]
+    uses: rapidsai/cudf/.github/workflows/test.yaml@branch-23.02
+    secrets: inherit
+    with:
+      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
