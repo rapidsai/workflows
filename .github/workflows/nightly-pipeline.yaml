@@ -35,7 +35,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: update-workflows
-          wait_interval: 120
+          wait_interval: 30
           client_payload: '{"branch": "branch-23.02", "date": "2023-01-01", "sha": "10b1650c8be5fa88e29e7e487dbbdd50f0d920bc"}'
           propagate_failure: false
           trigger_workflow: true
@@ -52,7 +52,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: update-workflows
-          wait_interval: 120
+          wait_interval: 30
           client_payload: '{"branch": "branch-23.02", "date": "2023-01-01", "sha": "10b1650c8be5fa88e29e7e487dbbdd50f0d920bc"}'
           propagate_failure: false
           trigger_workflow: true
