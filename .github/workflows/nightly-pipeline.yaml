@@ -13,77 +13,95 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  get-run-info:
-    uses: ./.github/workflows/get-run-info.yaml
-    secrets: inherit
-    with:
-      branch: branch-23.02
-      repos: >-
-        rapidsai/cudf
-        rapidsai/cuml
-        rapidsai/raft
-        rapidsai/rmm
+  # get-run-info:
+  #   uses: ./.github/workflows/get-run-info.yaml
+  #   secrets: inherit
+  #   with:
+  #     branch: branch-23.02
+  #     repos: >-
+  #       rapidsai/cudf
+  #       rapidsai/cuml
+  #       rapidsai/raft
+  #       rapidsai/rmm
   rmm-build:
-    needs: get-run-info
-    uses: rapidsai/rmm/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
+    # needs: get-run-info
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: rapidsai
+          repo: rmm
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: update-workflows
+          wait_interval: 120
+          client_payload: '{"branch": "branch-23.02", "date": "2023-01-01", "sha": "10b1650c8be5fa88e29e7e487dbbdd50f0d920bc"}'
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   rmm-tests:
-    needs: [get-run-info, rmm-build]
-    uses: rapidsai/rmm/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
-  cudf-build:
-    needs: [get-run-info, rmm-build]
-    uses: rapidsai/cudf/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
-  cudf-tests:
-    needs: [get-run-info, cudf-build]
-    uses: rapidsai/cudf/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
-  raft-build:
-    needs: [get-run-info]
-    uses: rapidsai/raft/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.raft }}
-  raft-tests:
-    needs: [get-run-info, raft-build]
-    uses: rapidsai/raft/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.raft }}
-  cuml-build:
-    needs: [get-run-info, cudf-build]
-    uses: rapidsai/cuml/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cuml }}
-  cuml-tests:
-    needs: [get-run-info, cuml-build]
-    uses: rapidsai/cuml/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cuml }}
+    needs: [rmm-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: rapidsai
+          repo: rmm
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: update-workflows
+          wait_interval: 120
+          client_payload: '{"branch": "branch-23.02", "date": "2023-01-01", "sha": "10b1650c8be5fa88e29e7e487dbbdd50f0d920bc"}'
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  # cudf-build:
+  #   needs: [get-run-info, rmm-build]
+  #   uses: rapidsai/cudf/.github/workflows/build.yaml@branch-23.02
+  #   secrets: inherit
+  #   with:
+  #     branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+  #     date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+  #     sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
+  # cudf-tests:
+  #   needs: [get-run-info, cudf-build]
+  #   uses: rapidsai/cudf/.github/workflows/test.yaml@branch-23.02
+  #   secrets: inherit
+  #   with:
+  #     branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+  #     date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+  #     sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
+  # raft-build:
+  #   needs: [get-run-info]
+  #   uses: rapidsai/raft/.github/workflows/build.yaml@branch-23.02
+  #   secrets: inherit
+  #   with:
+  #     branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+  #     date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+  #     sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.raft }}
+  # raft-tests:
+  #   needs: [get-run-info, raft-build]
+  #   uses: rapidsai/raft/.github/workflows/test.yaml@branch-23.02
+  #   secrets: inherit
+  #   with:
+  #     branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+  #     date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+  #     sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.raft }}
+  # cuml-build:
+  #   needs: [get-run-info, cudf-build]
+  #   uses: rapidsai/cuml/.github/workflows/build.yaml@branch-23.02
+  #   secrets: inherit
+  #   with:
+  #     branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+  #     date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+  #     sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cuml }}
+  # cuml-tests:
+  #   needs: [get-run-info, cuml-build]
+  #   uses: rapidsai/cuml/.github/workflows/test.yaml@branch-23.02
+  #   secrets: inherit
+  #   with:
+  #     branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+  #     date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
+  #     sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cuml }}
