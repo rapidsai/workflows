@@ -14,76 +14,288 @@ concurrency:
 
 jobs:
   get-run-info:
-    uses: ./.github/workflows/get-run-info.yaml
+    uses: ./.github/workflows/get-run-info-v2.yaml
     secrets: inherit
     with:
       branch: branch-23.02
       repos: >-
         rapidsai/cudf
+        rapidsai/cugraph
         rapidsai/cuml
+        rapidsai/cusignal
+        rapidsai/cuspatial
+        rapidsai/cuxfilter
         rapidsai/raft
         rapidsai/rmm
   rmm-build:
     needs: get-run-info
-    uses: rapidsai/rmm/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: rmm
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   rmm-tests:
     needs: [get-run-info, rmm-build]
-    uses: rapidsai/rmm/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.rmm }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: rmm
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   cudf-build:
     needs: [get-run-info, rmm-build]
-    uses: rapidsai/cudf/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cudf
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   cudf-tests:
     needs: [get-run-info, cudf-build]
-    uses: rapidsai/cudf/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cudf }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cudf
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   raft-build:
-    needs: [get-run-info]
-    uses: rapidsai/raft/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.raft }}
+    needs: [get-run-info, rmm-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: raft
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   raft-tests:
     needs: [get-run-info, raft-build]
-    uses: rapidsai/raft/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.raft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: raft
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   cuml-build:
-    needs: [get-run-info, cudf-build]
-    uses: rapidsai/cuml/.github/workflows/build.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cuml }}
+    needs: [get-run-info, cudf-build, raft-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuml
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
   cuml-tests:
     needs: [get-run-info, cuml-build]
-    uses: rapidsai/cuml/.github/workflows/test.yaml@branch-23.02
-    secrets: inherit
-    with:
-      branch: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-      date: ${{ fromJSON(needs.get-run-info.outputs.obj).date }}
-      sha: ${{ fromJSON(needs.get-run-info.outputs.obj).shas.cuml }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuml
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cugraph-build:
+    needs: [get-run-info, cudf-build, raft-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cugraph
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cugraph-tests:
+    needs: [get-run-info, cugraph-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cugraph
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cusignal-build:
+    needs: [get-run-info]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cusignal
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cusignal-tests:
+    needs: [get-run-info, cusignal-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cusignal
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cuspatial-build:
+    needs: [get-run-info, cudf-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuspatial
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cuspatial-tests:
+    needs: [get-run-info, cuspatial-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuspatial
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cuxfilter-build:
+    needs: [get-run-info, cudf-build, cuspatial-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuxfilter
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  cuxfilter-tests:
+    needs: [get-run-info, cuxfilter-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuxfilter
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 30
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
