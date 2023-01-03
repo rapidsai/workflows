@@ -62,10 +62,9 @@ jobs:
             PAYLOADS=$(jq -nc '(env.PAYLOADS|fromjson) + {(env.JUST_REPO): (env.REPO_PAYLOAD|fromjson)}')
           done
 
-          # TODO: replace hardcoded branch w/ env.BRANCH after testing is complete
           OBJ=$(
             jq -nc '{
-              "branch": "update-workflows",
+              "branch": env.BRANCH,
               "payloads": (env.PAYLOADS|fromjson)
             }'
           )
