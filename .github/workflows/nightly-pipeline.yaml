@@ -40,7 +40,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
           propagate_failure: false
           trigger_workflow: true
@@ -57,7 +57,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
           propagate_failure: false
           trigger_workflow: true
@@ -74,7 +74,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
           propagate_failure: false
           trigger_workflow: true
@@ -91,7 +91,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
           propagate_failure: false
           trigger_workflow: true
@@ -108,7 +108,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
           propagate_failure: false
           trigger_workflow: true
@@ -125,7 +125,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
           propagate_failure: false
           trigger_workflow: true
@@ -142,7 +142,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
           propagate_failure: false
           trigger_workflow: true
@@ -159,7 +159,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
           propagate_failure: false
           trigger_workflow: true
@@ -176,7 +176,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
           propagate_failure: false
           trigger_workflow: true
@@ -193,7 +193,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
           propagate_failure: false
           trigger_workflow: true
@@ -210,7 +210,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
           propagate_failure: false
           trigger_workflow: true
@@ -227,7 +227,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
           propagate_failure: false
           trigger_workflow: true
@@ -244,7 +244,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
           propagate_failure: false
           trigger_workflow: true
@@ -261,7 +261,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
           propagate_failure: false
           trigger_workflow: true
@@ -278,7 +278,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
           propagate_failure: false
           trigger_workflow: true
@@ -295,7 +295,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
           propagate_failure: false
           trigger_workflow: true
@@ -312,7 +312,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.dask-cuda) }}
           propagate_failure: false
           trigger_workflow: true
@@ -329,7 +329,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.dask-cuda) }}
           propagate_failure: false
           trigger_workflow: true
