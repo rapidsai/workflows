@@ -25,6 +25,7 @@ jobs:
         rapidsai/cusignal
         rapidsai/cuspatial
         rapidsai/cuxfilter
+        rapidsai/dask-cuda
         rapidsai/raft
         rapidsai/rmm
   rmm-build:
@@ -39,7 +40,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
           propagate_failure: false
           trigger_workflow: true
@@ -56,13 +57,13 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
           propagate_failure: false
           trigger_workflow: true
           wait_workflow: true
   cudf-build:
-    needs: [get-run-info, rmm-build]
+    needs: [get-run-info, rmm-build, dask-cuda-build]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -73,7 +74,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
           propagate_failure: false
           trigger_workflow: true
@@ -90,13 +91,13 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
           propagate_failure: false
           trigger_workflow: true
           wait_workflow: true
   raft-build:
-    needs: [get-run-info, rmm-build]
+    needs: [get-run-info, rmm-build, dask-cuda-build]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -107,7 +108,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
           propagate_failure: false
           trigger_workflow: true
@@ -124,7 +125,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
           propagate_failure: false
           trigger_workflow: true
@@ -141,7 +142,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
           propagate_failure: false
           trigger_workflow: true
@@ -158,13 +159,13 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
           propagate_failure: false
           trigger_workflow: true
           wait_workflow: true
   cugraph-build:
-    needs: [get-run-info, cudf-build, raft-build]
+    needs: [get-run-info, cudf-build, raft-build, dask-cuda-build]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -175,7 +176,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
           propagate_failure: false
           trigger_workflow: true
@@ -192,7 +193,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
           propagate_failure: false
           trigger_workflow: true
@@ -209,7 +210,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
           propagate_failure: false
           trigger_workflow: true
@@ -226,7 +227,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
           propagate_failure: false
           trigger_workflow: true
@@ -243,7 +244,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
           propagate_failure: false
           trigger_workflow: true
@@ -260,13 +261,13 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
           propagate_failure: false
           trigger_workflow: true
           wait_workflow: true
   cuxfilter-build:
-    needs: [get-run-info, cudf-build, cuspatial-build]
+    needs: [get-run-info, cudf-build, cuspatial-build, dask-cuda-build]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -277,7 +278,7 @@ jobs:
           github_user: GPUtester
           workflow_file_name: build.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
           propagate_failure: false
           trigger_workflow: true
@@ -294,8 +295,42 @@ jobs:
           github_user: GPUtester
           workflow_file_name: test.yaml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 30
+          wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  dask-cuda-build:
+    needs: [get-run-info]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: dask-cuda
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.dask-cuda) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  dask-cuda-tests:
+    needs: [get-run-info, dask-cuda-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: dask-cuda
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.dask-cuda) }}
           propagate_failure: false
           trigger_workflow: true
           wait_workflow: true
