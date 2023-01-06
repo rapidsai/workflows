@@ -27,9 +27,9 @@ fi
 echo "Replacing RAPIDS branch versions"
 sed -ri \
   "s/branch-${RAPIDS_BRANCH_PATTERN}/branch-${NEW_BRANCH_VERSION}/g" \
-  .github/workflows/{nightly,pip-wheels}-pipeline.yaml
+  .github/workflows/nightly-pipeline.yaml
 
 echo "Replacing ucx-py branch versions"
 sed -ri \
   "s/branch-${UCX_PY_BRANCH_PATTERN}/branch-${UCX_PY_VERSION}/g" \
-  .github/workflows/{nightly,pip-wheels}-pipeline.yaml
+  .github/workflows/nightly-pipeline.yaml

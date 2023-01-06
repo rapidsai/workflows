@@ -13,10 +13,17 @@ on:
 # The output object looks like this:
 # {
 #   "branch": "branch-22.10",
-#   "date": "2022-09-01",
-#   "shas": {
-#     "rmm": "8a3a552e07fa8254c54804addcab103aea89f985",
-#     "cudf": "dfd3d89392fa4710752e3067b16fa9a2edb28174"
+#   "payloads": {
+#     "rmm": {
+#        "branch": "branch-22.10",
+#        "date": "2022-09-01",
+#        "sha": "8a3a552e07fa8254c54804addcab103aea89f985"
+#      },
+#     "cudf": {
+#        "branch": "branch-22.10",
+#        "date": "2022-09-01",
+#        "sha": "dfd3d89392fa4710752e3067b16fa9a2edb28174"
+#      }
 #   }
 # }
 
@@ -33,21 +40,30 @@ jobs:
         env:
           INPUTS_CONTEXT: ${{ toJson(inputs) }}
         run: |
+          export DATE=$(date +%F)
+          export BRANCH=${{ inputs.branch }}
           export REPOS=$(echo "${{ inputs.repos }}" | jq -Rc 'split(" ")')
 
-          export SHAs='{}'
+          export PAYLOADS='{}'
           for REPO in $(jq -nr '(env.REPOS|fromjson) | .[]'); do
             export JUST_REPO=${REPO##*/} # removes GH organization
             export SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${{ inputs.branch }}")
-            SHAs=$(jq -nc '(env.SHAs|fromjson) + {(env.JUST_REPO): env.SHA}')
+
+            export REPO_PAYLOAD=$(
+              jq -nc '{
+                "branch": env.BRANCH,
+                "date": env.DATE,
+                "sha": env.SHA
+              }'
+            )
+            PAYLOADS=$(jq -nc '(env.PAYLOADS|fromjson) + {(env.JUST_REPO): (env.REPO_PAYLOAD|fromjson)}')
           done
 
           OBJ=$(
             jq -nc '{
-              "branch": "${{ inputs.branch }}",
-              "shas": (env.SHAs|fromjson),
-              "date": now | strftime("%F"),
+              "branch": env.BRANCH,
+              "payloads": (env.PAYLOADS|fromjson)
             }'
           )
-          echo "${OBJ}"
-          echo "obj=${OBJ}" >> ${GITHUB_OUTPUT}
+
+          echo "obj=${OBJ}" | tee --append ${GITHUB_OUTPUT}

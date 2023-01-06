@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   get-run-info:
-    uses: ./.github/workflows/get-run-info-v2.yaml
+    uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
       branch: branch-23.02
