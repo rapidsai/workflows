@@ -334,3 +334,44 @@ jobs:
           propagate_failure: false
           trigger_workflow: true
           wait_workflow: true
+  get-run-info-ucx-py:
+    uses: ./.github/workflows/get-run-info.yaml
+    secrets: inherit
+    with:
+      branch: branch-0.30
+      repos: >-
+        rapidsai/ucx-py
+  ucx-py-build:
+    needs: get-run-info-ucx-py
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: ucx-py
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info-ucx-py.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info-ucx-py.outputs.obj).payloads.ucx-py) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
+  ucx-py-tests:
+    needs: [get-run-info, ucx-py-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: ucx-py
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info-ucx-py.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info-ucx-py.outputs.obj).payloads.ucx-py) }}
+          propagate_failure: false
+          trigger_workflow: true
+          wait_workflow: true
