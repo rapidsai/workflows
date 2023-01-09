@@ -1,7 +1,7 @@
 on:
   workflow_call:
     inputs:
-      branch:
+      rapids_version:
         type: string
       repos:
         type: string
@@ -13,10 +13,23 @@ on:
 # The output object looks like this:
 # {
 #   "branch": "branch-22.10",
-#   "date": "2022-09-01",
-#   "shas": {
-#     "rmm": "8a3a552e07fa8254c54804addcab103aea89f985",
-#     "cudf": "dfd3d89392fa4710752e3067b16fa9a2edb28174"
+#   "ucx-py-branch": "branch-0.28",
+#   "payloads": {
+#     "rmm": {
+#        "branch": "branch-22.10",
+#        "date": "2022-09-01",
+#        "sha": "8a3a552e07fa8254c54804addcab103aea89f985"
+#      },
+#     "cudf": {
+#        "branch": "branch-22.10",
+#        "date": "2022-09-01",
+#        "sha": "dfd3d89392fa4710752e3067b16fa9a2edb28174"
+#      },
+#     "ucx-py": {
+#        "branch": "branch-0.28",
+#        "date": "2022-09-01",
+#        "sha": "daf117ca01c37508f102666b3b4999b955a16a12"
+#      }
 #   }
 # }
 
@@ -33,21 +46,41 @@ jobs:
         env:
           INPUTS_CONTEXT: ${{ toJson(inputs) }}
         run: |
+          export DATE=$(date +%F)
+          export RAPIDS_VERSION=${{ inputs.rapids_version }}
+          export UCX_PY_VERSION="$(curl -sL https://version.gpuci.io/rapids/${RAPIDS_VERSION})"
+          export RAPIDS_BRANCH="branch-${RAPIDS_VERSION}"
+          export UCX_PY_BRANCH="branch-${UCX_PY_VERSION}"
+
           export REPOS=$(echo "${{ inputs.repos }}" | jq -Rc 'split(" ")')
 
-          export SHAs='{}'
+          export PAYLOADS='{}'
           for REPO in $(jq -nr '(env.REPOS|fromjson) | .[]'); do
             export JUST_REPO=${REPO##*/} # removes GH organization
-            export SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${{ inputs.branch }}")
-            SHAs=$(jq -nc '(env.SHAs|fromjson) + {(env.JUST_REPO): env.SHA}')
+            export BRANCH="${RAPIDS_BRANCH}"
+
+            if [ "${JUST_REPO}" = "ucx-py" ]; then
+              export BRANCH="${UCX_PY_BRANCH}"
+            fi
+
+            export SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${BRANCH}")
+
+            export REPO_PAYLOAD=$(
+              jq -nc '{
+                "branch": env.BRANCH,
+                "date": env.DATE,
+                "sha": env.SHA
+              }'
+            )
+            PAYLOADS=$(jq -nc '(env.PAYLOADS|fromjson) + {(env.JUST_REPO): (env.REPO_PAYLOAD|fromjson)}')
           done
 
           OBJ=$(
             jq -nc '{
-              "branch": "${{ inputs.branch }}",
-              "shas": (env.SHAs|fromjson),
-              "date": now | strftime("%F"),
+              "branch": env.RAPIDS_BRANCH,
+              "ucx-py-branch": env.UCX_PY_BRANCH,
+              "payloads": (env.PAYLOADS|fromjson)
             }'
           )
-          echo "${OBJ}"
-          echo "obj=${OBJ}" >> ${GITHUB_OUTPUT}
+
+          echo "obj=${OBJ}" | tee --append ${GITHUB_OUTPUT}
