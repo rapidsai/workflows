@@ -63,7 +63,8 @@ jobs:
               export BRANCH="${UCX_PY_BRANCH}"
             fi
 
-            export SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${BRANCH}")
+            SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${BRANCH}")
+            export SHA
 
             export REPO_PAYLOAD=$(
               jq -nc '{
