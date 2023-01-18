@@ -39,7 +39,7 @@ jobs:
     outputs:
       obj: ${{ steps.get-obj.outputs.obj }}
     env:
-      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      GH_TOKEN: ${{secrets.WORKFLOW_TOKEN}}
     steps:
       - name: Get Run Info
         id: get-obj
