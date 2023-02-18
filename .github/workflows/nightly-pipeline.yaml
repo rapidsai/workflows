@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
-      rapids_version: "23.02"
+      rapids_version: "23.04"
       repos: >-
         rapidsai/cucim
         rapidsai/cudf
