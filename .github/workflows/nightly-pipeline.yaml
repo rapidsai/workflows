@@ -118,7 +118,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   raft-tests:
-    needs: [get-run-info, raft-build]
+    needs: [get-run-info, raft-build, ucx-py-build]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
