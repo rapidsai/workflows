@@ -51,7 +51,6 @@ jobs:
           wait_workflow: true
   rmm-tests:
     needs: [get-run-info, rmm-build]
-    if: ${{ needs.rmm-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -86,7 +85,6 @@ jobs:
           wait_workflow: true
   cudf-tests:
     needs: [get-run-info, cudf-build]
-    if: ${{ needs.cudf-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -121,7 +119,6 @@ jobs:
           wait_workflow: true
   raft-tests:
     needs: [get-run-info, raft-build, ucx-py-build]
-    if: ${{ needs.raft-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -156,7 +153,6 @@ jobs:
           wait_workflow: true
   cuml-tests:
     needs: [get-run-info, cuml-build]
-    if: ${{ needs.cuml-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -191,7 +187,6 @@ jobs:
           wait_workflow: true
   cugraph-tests:
     needs: [get-run-info, cugraph-build]
-    if: ${{ needs.cugraph-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -226,7 +221,6 @@ jobs:
           wait_workflow: true
   cusignal-tests:
     needs: [get-run-info, cusignal-build]
-    if: ${{ needs.cusignal-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -261,7 +255,6 @@ jobs:
           wait_workflow: true
   cuspatial-tests:
     needs: [get-run-info, cuspatial-build]
-    if: ${{ needs.cuspatial-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -296,7 +289,6 @@ jobs:
           wait_workflow: true
   cuxfilter-tests:
     needs: [get-run-info, cuxfilter-build]
-    if: ${{ needs.cuxfilter-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -331,7 +323,6 @@ jobs:
           wait_workflow: true
   dask-cuda-tests:
     needs: [get-run-info, dask-cuda-build]
-    if: ${{ needs.dask-cuda-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -366,7 +357,6 @@ jobs:
           wait_workflow: true
   ucx-py-tests:
     needs: [get-run-info, ucx-py-build]
-    if: ${{ needs.ucx-py-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -401,7 +391,6 @@ jobs:
           wait_workflow: true
   cugraph-ops-tests:
     needs: [get-run-info, cugraph-ops-build]
-    if: ${{ needs.cugraph-ops-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -436,7 +425,6 @@ jobs:
           wait_workflow: true
   cucim-tests:
     needs: [get-run-info, cucim-build]
-    if: ${{ needs.cucim-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
