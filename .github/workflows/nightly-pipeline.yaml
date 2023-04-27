@@ -46,7 +46,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   rmm-tests:
@@ -63,12 +63,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cudf-build:
     needs: [get-run-info, rmm-build, dask-cuda-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -80,7 +81,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cudf-tests:
@@ -97,12 +98,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cudf) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   raft-build:
     needs: [get-run-info, rmm-build, dask-cuda-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -114,7 +116,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   raft-tests:
@@ -131,12 +133,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.raft) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cuml-build:
     needs: [get-run-info, cudf-build, raft-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -148,7 +151,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cuml-tests:
@@ -165,12 +168,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuml) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cugraph-build:
     needs: [get-run-info, cudf-build, raft-build, dask-cuda-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -182,7 +186,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cugraph-tests:
@@ -199,12 +203,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cusignal-build:
     needs: [get-run-info]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -216,7 +221,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cusignal-tests:
@@ -233,12 +238,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cusignal) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cuspatial-build:
     needs: [get-run-info, cudf-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -250,7 +256,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cuspatial-tests:
@@ -267,12 +273,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuspatial) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cuxfilter-build:
     needs: [get-run-info, cudf-build, cuspatial-build, dask-cuda-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -284,7 +291,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cuxfilter-tests:
@@ -301,12 +308,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuxfilter) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   dask-cuda-build:
     needs: [get-run-info]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -318,7 +326,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.dask-cuda) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   dask-cuda-tests:
@@ -335,12 +343,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.dask-cuda) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   ucx-py-build:
     needs: get-run-info
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -352,7 +361,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucx-py-branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.ucx-py) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   ucx-py-tests:
@@ -369,12 +378,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucx-py-branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.ucx-py) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cugraph-ops-build:
     needs: [get-run-info, rmm-build, raft-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -386,7 +396,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph-ops) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cugraph-ops-tests:
@@ -403,7 +413,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph-ops) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cucim-build:
@@ -420,7 +430,7 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cucim) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cucim-tests:
@@ -437,12 +447,13 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cucim) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
   cumlprims_mg-build:
     needs: [get-run-info, raft-build]
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -454,6 +465,6 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cumlprims_mg) }}
-          propagate_failure: false
+          propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
