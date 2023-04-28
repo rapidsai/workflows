@@ -59,7 +59,7 @@ jobs:
             export JUST_REPO=${REPO##*/} # removes GH organization
             export BRANCH="${RAPIDS_BRANCH}"
 
-            if [ "${JUST_REPO}" = "ucx-py" ]; then
+            if [ "${JUST_REPO}" = "ucx-py" ] || [ "${JUST_REPO}" = "ucxx" ]; then
               export BRANCH="${UCX_PY_BRANCH}"
             fi
 
