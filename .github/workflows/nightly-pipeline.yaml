@@ -25,6 +25,7 @@ jobs:
         rapidsai/cugraph-ops
         rapidsai/cuml
         rapidsai/cumlprims_mg
+        rapidsai/cuopt
         rapidsai/cusignal
         rapidsai/cuspatial
         rapidsai/cuxfilter
@@ -105,7 +106,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cuopt-build:
-    needs: [get-run-info, rmm-build, dask-cuda-build]
+    needs: [get-run-info, rmm-build, raft-build, cudf-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
