@@ -104,6 +104,42 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+  cuopt-build:
+    needs: [get-run-info, rmm-build, dask-cuda-build]
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuopt
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuopt) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+  cuopt-tests:
+    needs: [get-run-info, cuopt-build]
+    if: ${{ needs.cuopt-build.result == 'success' && !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: cuopt
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuopt) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
   raft-build:
     needs: [get-run-info, rmm-build, dask-cuda-build]
     runs-on: ubuntu-latest
