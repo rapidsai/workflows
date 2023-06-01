@@ -1,0 +1,22 @@
+name: Trigger Nightly RAPIDS Pipeline
+
+on:
+  schedule:
+    - cron: "0 5 * * *" # 5am UTC / 1am EST
+
+jobs:
+  trigger-pipeline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - rapids_version: "23.06"
+            run_tests: true
+          - rapids_version: "23.08"
+            run_tests: false
+    steps:
+      - name: Trigger Pipeline
+        run: |
+          gh workflow run nightly-pipeline.yaml \
+            -f rapids_version="${{ matrix.rapids_version }}" \
+            -f run_tests="${{ matrix.run_tests }}"
