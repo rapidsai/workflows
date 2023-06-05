@@ -16,8 +16,8 @@ jobs:
             run_tests: false
     steps:
       - name: Trigger Pipeline
-      env:
-        GH_TOKEN: ${{ github.token }}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh workflow run nightly-pipeline.yaml \
             -f rapids_version="${{ matrix.rapids_version }}" \
