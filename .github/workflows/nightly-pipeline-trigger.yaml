@@ -15,6 +15,7 @@ jobs:
           - rapids_version: "23.08"
             run_tests: false
     steps:
+      - uses: actions/checkout@v3
       - name: Trigger Pipeline
         env:
           GH_TOKEN: ${{ github.token }}
