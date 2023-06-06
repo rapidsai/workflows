@@ -1,6 +1,7 @@
 name: Trigger Nightly RAPIDS Pipeline
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 5 * * *" # 5am UTC / 1am EST
 
