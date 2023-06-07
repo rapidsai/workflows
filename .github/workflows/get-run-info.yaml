@@ -88,7 +88,7 @@ jobs:
             }'
           )
 
-          echo "${OBJ}" | tee --append "${GITHUB_ENV}"
+          echo "OBJ=${OBJ}" | tee --append "${GITHUB_ENV}"
       - name: Assign outputs
         id: get-obj
         run: echo "obj=${OBJ}" >> "${GITHUB_OUTPUT}"
