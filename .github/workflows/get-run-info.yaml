@@ -33,6 +33,10 @@ on:
 #   }
 # }
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -42,10 +46,10 @@ jobs:
       GH_TOKEN: ${{secrets.WORKFLOW_TOKEN}}
     steps:
       - name: Get Run Info
-        id: get-obj
         env:
           INPUTS_CONTEXT: ${{ toJson(inputs) }}
         run: |
+          set -euo pipefail
           export DATE=$(date +%F)
           export RAPIDS_VERSION=${{ inputs.rapids_version }}
           export UCX_PY_VERSION="$(curl -sL https://version.gpuci.io/rapids/${RAPIDS_VERSION})"
@@ -84,4 +88,21 @@ jobs:
             }'
           )
 
-          echo "obj=${OBJ}" | tee --append ${GITHUB_OUTPUT}
+          echo "${OBJ}" | tee --append "${GITHUB_ENV}"
+      - name: Assign outputs
+        id: get-obj
+        run: echo "obj=${OBJ}" >> "${GITHUB_OUTPUT}"
+      - name: Print Summary
+        env:
+          RAPIDS_VERSION: ${{ inputs.rapids_version }}
+          RUN_TESTS: ${{ inputs.run_tests }}
+        run: |
+          set -euo pipefail
+          echo "## \`${RAPIDS_VERSION}\` Nightly Run" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Run tests**: \`${RUN_TESTS}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Run parameters**:" >> "$GITHUB_STEP_SUMMARY"
+
+          echo "\`\`\`json" >> "$GITHUB_STEP_SUMMARY"
+          echo "$(jq -n 'env.OBJ|fromjson')" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
