@@ -46,6 +46,7 @@ jobs:
       GH_TOKEN: ${{secrets.WORKFLOW_TOKEN}}
     steps:
       - name: Get Run Info
+        id: get-obj
         env:
           INPUTS_CONTEXT: ${{ toJson(inputs) }}
         run: |
@@ -89,9 +90,7 @@ jobs:
           )
 
           echo "OBJ=${OBJ}" | tee --append "${GITHUB_ENV}"
-      - name: Assign outputs
-        id: get-obj
-        run: echo "obj=${OBJ}" >> "${GITHUB_OUTPUT}"
+          echo "obj=${OBJ}" >> "${GITHUB_OUTPUT}"
       - name: Print Summary
         env:
           RAPIDS_VERSION: ${{ inputs.rapids_version }}
