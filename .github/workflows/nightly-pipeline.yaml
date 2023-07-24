@@ -36,6 +36,7 @@ jobs:
         rapidsai/cuxfilter
         rapidsai/dask-cuda
         rapidsai/kvikio
+        rapidsai/rapids-cmake
         rapidsai/raft
         rapidsai/rmm
         rapidsai/ucxx
@@ -72,6 +73,41 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rmm) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+  rapids-cmake-build:
+    needs: get-run-info
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: rapids-cmake
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rapids-cmake) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+  rapids-cmake-tests:
+    needs: [get-run-info, rapids-cmake-build]
+    if: ${{ needs.rapids-cmake-build.result == 'success' && inputs.run_tests }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: rapids-cmake
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rapids-cmake) }}
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
