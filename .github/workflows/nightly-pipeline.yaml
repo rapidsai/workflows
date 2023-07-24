@@ -1,4 +1,5 @@
 name: Nightly RAPIDS Pipeline
+run-name: "Nightly RAPIDS v${{ inputs.rapids_version }} Pipeline"
 
 on:
   workflow_dispatch:
