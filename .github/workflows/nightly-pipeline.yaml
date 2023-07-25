@@ -362,7 +362,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cuspatial-build:
-    needs: [get-run-info, cudf-build]
+    needs: [get-run-info, rmm-build, cudf-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
