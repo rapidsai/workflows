@@ -254,7 +254,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cuml-build:
-    needs: [get-run-info, cudf-build, raft-build]
+    needs: [get-run-info, cudf-build, raft-build, cumlprims_mg-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
