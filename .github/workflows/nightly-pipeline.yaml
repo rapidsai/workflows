@@ -290,7 +290,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cugraph-build:
-    needs: [get-run-info, cudf-build, raft-build, dask-cuda-build, cugraph-ops-build]
+    needs: [get-run-info, rmm-build, cudf-build, raft-build, dask-cuda-build, cugraph-ops-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
