@@ -613,7 +613,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   ucxx-tests:
-    needs: [get-run-info, ucxx-build]
+    needs: [get-run-info, ucxx-build, cudf-build]
     if: ${{ needs.ucxx-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
