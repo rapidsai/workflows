@@ -42,7 +42,7 @@ jobs:
         rapidsai/ucxx
         rapidsai/ucx-py
   rmm-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -77,7 +77,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   rapids-cmake-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -112,7 +112,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   kvikio-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -254,7 +254,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cuml-build:
-    needs: [get-run-info, cudf-build, raft-build]
+    needs: [get-run-info, cudf-build, raft-build, cumlprims_mg-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
@@ -290,7 +290,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cugraph-build:
-    needs: [get-run-info, cudf-build, raft-build, dask-cuda-build]
+    needs: [get-run-info, rmm-build, cudf-build, raft-build, dask-cuda-build, cugraph-ops-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
@@ -362,7 +362,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cuspatial-build:
-    needs: [get-run-info, cudf-build]
+    needs: [get-run-info, rmm-build, cudf-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
@@ -470,7 +470,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   ucx-py-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
@@ -613,7 +613,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   ucxx-tests:
-    needs: [get-run-info, ucxx-build]
+    needs: [get-run-info, ucxx-build, cudf-build]
     if: ${{ needs.ucxx-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
