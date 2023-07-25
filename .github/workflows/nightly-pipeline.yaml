@@ -42,7 +42,7 @@ jobs:
         rapidsai/ucxx
         rapidsai/ucx-py
   rmm-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -77,7 +77,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   rapids-cmake-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -112,7 +112,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   kvikio-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -470,7 +470,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   ucx-py-build:
-    needs: get-run-info
+    needs: [get-run-info]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
