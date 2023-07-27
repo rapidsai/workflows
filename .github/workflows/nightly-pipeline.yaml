@@ -43,6 +43,7 @@ jobs:
         rapidsai/ucx-py
   rmm-build:
     needs: [get-run-info]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -60,7 +61,7 @@ jobs:
           wait_workflow: true
   rmm-tests:
     needs: [get-run-info, rmm-build]
-    if: ${{ needs.rmm-build.result == 'success' && inputs.run_tests }}
+    if: ${{ needs.rmm-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -78,6 +79,7 @@ jobs:
           wait_workflow: true
   rapids-cmake-build:
     needs: [get-run-info]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -95,7 +97,7 @@ jobs:
           wait_workflow: true
   rapids-cmake-tests:
     needs: [get-run-info, rapids-cmake-build]
-    if: ${{ needs.rapids-cmake-build.result == 'success' && inputs.run_tests }}
+    if: ${{ needs.rapids-cmake-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -113,6 +115,7 @@ jobs:
           wait_workflow: true
   kvikio-build:
     needs: [get-run-info]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -130,7 +133,7 @@ jobs:
           wait_workflow: true
   kvikio-tests:
     needs: [get-run-info, kvikio-build]
-    if: ${{ needs.kvikio-build.result == 'success' && inputs.run_tests }}
+    if: ${{ needs.kvikio-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -183,8 +186,8 @@ jobs:
           wait_workflow: true
   cuopt-build:
     needs: [get-run-info, rmm-build, raft-build, cudf-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -219,8 +222,8 @@ jobs:
           wait_workflow: true
   raft-build:
     needs: [get-run-info, rmm-build, dask-cuda-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -255,8 +258,8 @@ jobs:
           wait_workflow: true
   cuml-build:
     needs: [get-run-info, cudf-build, raft-build, cumlprims_mg-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -291,8 +294,8 @@ jobs:
           wait_workflow: true
   cugraph-build:
     needs: [get-run-info, rmm-build, cudf-build, raft-build, dask-cuda-build, cugraph-ops-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -327,8 +330,8 @@ jobs:
           wait_workflow: true
   cusignal-build:
     needs: [get-run-info]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -363,8 +366,8 @@ jobs:
           wait_workflow: true
   cuspatial-build:
     needs: [get-run-info, rmm-build, cudf-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -399,8 +402,8 @@ jobs:
           wait_workflow: true
   cuxfilter-build:
     needs: [get-run-info, cudf-build, cuspatial-build, dask-cuda-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -435,8 +438,8 @@ jobs:
           wait_workflow: true
   dask-cuda-build:
     needs: [get-run-info]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -471,8 +474,8 @@ jobs:
           wait_workflow: true
   ucx-py-build:
     needs: [get-run-info]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -507,8 +510,8 @@ jobs:
           wait_workflow: true
   cugraph-ops-build:
     needs: [get-run-info, rmm-build, raft-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -543,6 +546,7 @@ jobs:
           wait_workflow: true
   cucim-build:
     needs: [get-run-info]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
@@ -578,8 +582,8 @@ jobs:
           wait_workflow: true
   cumlprims_mg-build:
     needs: [get-run-info, raft-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
@@ -596,8 +600,8 @@ jobs:
           wait_workflow: true
   ucxx-build:
     needs: [get-run-info, rmm-build]
-    runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
