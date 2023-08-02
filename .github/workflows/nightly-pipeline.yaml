@@ -35,6 +35,7 @@ jobs:
         rapidsai/cuspatial
         rapidsai/cuxfilter
         rapidsai/dask-cuda
+        rapidsai/docker
         rapidsai/kvikio
         rapidsai/rapids-cmake
         rapidsai/raft
@@ -631,6 +632,41 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucx-py-branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.ucxx) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+  docker-build-and-test:
+    needs:
+      - get-run-info
+      - cucim-build
+      - cudf-build
+      - cugraph-build
+      - cugraph-ops-build
+      - cuml-build
+      - cumlprims_mg-build
+      - cusignal-build
+      - cuspatial-build
+      - cuxfilter-build
+      - dask-cuda-build
+      - kvikio-build
+      - raft-build
+      - rapids-cmake-build
+      - rmm-build
+      - ucx-py-build
+      - ucxx-build
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: rapidsai
+          repo: docker
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: publish.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: '{"run_tests": ${{ inputs.run_tests }} }'
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
