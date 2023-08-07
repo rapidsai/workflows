@@ -663,7 +663,7 @@ jobs:
           repo: docker
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
-          workflow_file_name: publish.yaml
+          workflow_file_name: publish.yml
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: '{"run_tests": ${{ inputs.run_tests }} }'
