@@ -13,6 +13,8 @@ jobs:
         include:
           - rapids_version: "23.10"
             run_tests: true
+          - rapids_version: "23.12"
+            run_tests: false
     steps:
       - uses: actions/checkout@v3
       - name: Trigger Pipeline
