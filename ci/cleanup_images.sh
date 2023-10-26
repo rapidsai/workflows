@@ -36,11 +36,10 @@ while [ ! -z "$next_page" ] && [ "$next_page" != "null" ]; do
         last_pushed=$(echo "$tag_info" | jq -r '.tag_last_pushed')
         last_pushed_ts=$(date --date="$last_pushed" +%s)
 
-        # age in days
         current_time=$(date +%s)
-        age=$(( (current_time - last_pushed_ts) / 86400 ))
+        age_in_days=$(( (current_time - last_pushed_ts) / 86400 )) # 86400 seconds in one day
 
-        if [ "$age" -gt 30 ]; then
+        if [ "$age_in_days" -gt 30 ]; then
             tag_name=$(echo "$tag_info" | jq -r '.name')
             delete_image "$org" "$repo" "$tag_name"
         fi
