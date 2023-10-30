@@ -28,10 +28,11 @@ fetch_tags() {
         "https://hub.docker.com/v2/namespaces/$org/repositories/$repo/tags?page=$page&page_size=100"
 }
 
-tags_json=$(fetch_tags "$org" "$repo" 1)
-next_page=$(echo "$tags_json" | jq -r '.next')
+page=1
+next_page="non-null"
 
 while [ -n "$next_page" ] && [ "$next_page" != "null" ]; do
+    tags_json=$(fetch_tags "$org" "$repo" "$page")
     echo "$tags_json" | jq -c '.results[]' | while read -r tag_info; do
         last_pushed=$(echo "$tag_info" | jq -r '.tag_last_pushed')
         last_pushed_ts=$(date --date="$last_pushed" +%s)
@@ -45,10 +46,6 @@ while [ -n "$next_page" ] && [ "$next_page" != "null" ]; do
         fi
     done
 
-    # Extract next page number
-    next_page_num=$(echo "$next_page" | grep -o 'page=[0-9]*' | cut -d "=" -f 2)
-    
-    # Load next page
-    tags_json=$(fetch_tags "$org" "$repo" "$next_page_num")
+    page=$((page + 1))
     next_page=$(echo "$tags_json" | jq -r '.next')
 done

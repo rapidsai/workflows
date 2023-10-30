@@ -13,9 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Run Cleanup Script
-      run: ci/cleanup_images.sh
-
     - name: Run With DockerHub Token
       uses: rapidsai/shared-actions/dockerhub-script@main
       with:
