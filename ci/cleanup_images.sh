@@ -22,7 +22,7 @@ fetch_tags() {
     local repo=$2
     local page=$3
 
-    curl --fail-with-body -i \
+    curl -L --fail-with-body \
         -H "Accept: application/json" \
         -H "Authorization: JWT $HUB_TOKEN" \
         "https://hub.docker.com/v2/namespaces/$org/repositories/$repo/tags?page=$page&page_size=100"
@@ -31,7 +31,7 @@ fetch_tags() {
 tags_json=$(fetch_tags "$org" "$repo" 1)
 next_page=$(echo "$tags_json" | jq -r '.next')
 
-while [ ! -z "$next_page" ] && [ "$next_page" != "null" ]; do
+while [ -n "$next_page" ] && [ "$next_page" != "null" ]; do
     echo "$tags_json" | jq -c '.results[]' | while read -r tag_info; do
         last_pushed=$(echo "$tag_info" | jq -r '.tag_last_pushed')
         last_pushed_ts=$(date --date="$last_pushed" +%s)
