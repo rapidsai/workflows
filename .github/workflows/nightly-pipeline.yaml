@@ -42,7 +42,7 @@ jobs:
         rapidsai/ucxx
         rapidsai/ucx-py
         rapidsai/wholegraph
-        rapidsai/xdf-integration
+        rapidsai/cudf-pandas-integration
   rmm-build:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
@@ -194,7 +194,7 @@ jobs:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
           owner: rapidsai
-          repo: xdf-integration
+          repo: cudf-pandas-integration
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
           workflow_file_name: nightly.yaml
