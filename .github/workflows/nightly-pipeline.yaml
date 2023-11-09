@@ -26,6 +26,7 @@ jobs:
       repos: >-
         rapidsai/cucim
         rapidsai/cudf
+        rapidsai/cudf-pandas-integration
         rapidsai/cugraph
         rapidsai/cugraph-ops
         rapidsai/cuml
@@ -42,7 +43,6 @@ jobs:
         rapidsai/ucxx
         rapidsai/ucx-py
         rapidsai/wholegraph
-        rapidsai/cudf-pandas-integration
   rmm-build:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
