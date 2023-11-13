@@ -1,3 +1,3 @@
-# actions
+# workflows
 
-This repository contains GitHub Actions that don't belong in other repositories.
+This repository contains RAPIDS nightly build/test workflows.
