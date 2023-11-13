@@ -68,6 +68,10 @@ jobs:
               export BRANCH="${UCX_PY_BRANCH}"
             fi
 
+            if [ "${JUST_REPO}" = "cudf-pandas-integration" ]; then
+              export BRANCH="main"
+            fi
+
             SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${BRANCH}")
             export SHA
 
