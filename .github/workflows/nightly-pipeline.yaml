@@ -438,7 +438,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   ucx-py-tests:
-    needs: [get-run-info, ucx-py-build]
+    needs: [get-run-info, ucx-py-build, cudf-build]
     if: ${{ needs.ucx-py-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
