@@ -31,9 +31,10 @@ fetch_tags() {
 page=1
 next_page="non-null"
 
-while [ -n "$next_page" ] && [ "$next_page" != "null" ]; do
+while [ "$next_page" != "null" ]; do
     tags_json=$(fetch_tags "$org" "$repo" "$page")
-    echo "$tags_json" | jq -c '.results[]' | while read -r tag_info; do
+echo "$tags_json" | jq -c '.results[]' | while read -r tag_info; do
+        tag_name=$(echo "$tag_info" | jq -r '.name')
         last_pushed=$(echo "$tag_info" | jq -r '.tag_last_pushed')
         last_pushed_ts=$(date --date="$last_pushed" +%s)
 
@@ -41,8 +42,9 @@ while [ -n "$next_page" ] && [ "$next_page" != "null" ]; do
         age_in_days=$(( (current_time - last_pushed_ts) / 86400 )) # 86400 seconds in one day
 
         if [ "$age_in_days" -gt 30 ]; then
-            tag_name=$(echo "$tag_info" | jq -r '.name')
             delete_image "$org" "$repo" "$tag_name"
+        else
+            echo "${tag_name} is less than 30 days old. Not deleting."
         fi
     done
 
