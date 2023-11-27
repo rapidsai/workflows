@@ -9,7 +9,7 @@ delete_image() {
     local repo=$2
     local tag=$3
 
-    curl --silent --fail-with-body -i -X DELETE \
+    curl --silent --fail-with-body -X DELETE \
         -H "Accept: application/json" \
         -H "Authorization: JWT $HUB_TOKEN" \
         "https://hub.docker.com/v2/repositories/$org/$repo/tags/$tag/"
