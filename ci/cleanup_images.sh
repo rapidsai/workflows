@@ -9,11 +9,11 @@ delete_image() {
     local repo=$2
     local tag=$3
 
-    curl --fail-with-body -i -X DELETE \
+    curl --silent --fail-with-body -i -X DELETE \
         -H "Accept: application/json" \
         -H "Authorization: JWT $HUB_TOKEN" \
         "https://hub.docker.com/v2/repositories/$org/$repo/tags/$tag/"
-    
+
     echo "Deleted image $org/$repo:$tag"
 }
 
@@ -22,7 +22,7 @@ fetch_tags() {
     local repo=$2
     local page=$3
 
-    curl -L --fail-with-body \
+    curl --silent -L --fail-with-body \
         -H "Accept: application/json" \
         -H "Authorization: JWT $HUB_TOKEN" \
         "https://hub.docker.com/v2/namespaces/$org/repositories/$repo/tags?page=$page&page_size=100"
