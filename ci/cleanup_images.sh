@@ -10,6 +10,7 @@ delete_image() {
     local tag=$3
 
     curl --silent --fail-with-body -X DELETE \
+        --retry 5 --retry-all-errors \
         -H "Accept: application/json" \
         -H "Authorization: JWT $HUB_TOKEN" \
         "https://hub.docker.com/v2/repositories/$org/$repo/tags/$tag/"
@@ -23,6 +24,7 @@ fetch_tags() {
     local page=$3
 
     curl --silent -L --fail-with-body \
+        --retry 5 --retry-all-errors \
         -H "Accept: application/json" \
         -H "Authorization: JWT $HUB_TOKEN" \
         "https://hub.docker.com/v2/namespaces/$org/repositories/$repo/tags?page=$page&page_size=100"
@@ -43,6 +45,7 @@ echo "$tags_json" | jq -c '.results[]' | while read -r tag_info; do
 
         if [ "$age_in_days" -gt 30 ]; then
             delete_image "$org" "$repo" "$tag_name"
+            sleep 1s
         else
             echo "${tag_name} is less than 30 days old. Not deleting."
         fi
