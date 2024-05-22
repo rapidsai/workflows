@@ -48,7 +48,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: rmm
@@ -66,7 +66,7 @@ jobs:
     if: ${{ needs.rmm-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: rmm
@@ -84,7 +84,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: rapids-cmake
@@ -102,7 +102,7 @@ jobs:
     if: ${{ needs.rapids-cmake-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: rapids-cmake
@@ -120,7 +120,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: kvikio
@@ -138,7 +138,7 @@ jobs:
     if: ${{ needs.kvikio-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: kvikio
@@ -155,7 +155,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cudf
@@ -173,7 +173,7 @@ jobs:
     if: ${{ needs.cudf-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cudf
@@ -191,7 +191,7 @@ jobs:
     if: ${{ needs.cudf-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cudf-pandas-integration
@@ -209,7 +209,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: raft
@@ -227,7 +227,7 @@ jobs:
     if: ${{ needs.raft-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: raft
@@ -245,7 +245,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuvs
@@ -263,7 +263,7 @@ jobs:
     if: ${{ needs.cuvs-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuvs
@@ -280,7 +280,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuml
@@ -298,7 +298,7 @@ jobs:
     if: ${{ needs.cuml-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuml
@@ -316,7 +316,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cugraph
@@ -334,7 +334,7 @@ jobs:
     if: ${{ needs.cugraph-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cugraph
@@ -352,7 +352,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuspatial
@@ -370,7 +370,7 @@ jobs:
     if: ${{ needs.cuspatial-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuspatial
@@ -388,7 +388,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuxfilter
@@ -406,7 +406,7 @@ jobs:
     if: ${{ needs.cuxfilter-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cuxfilter
@@ -424,7 +424,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: dask-cuda
@@ -442,7 +442,7 @@ jobs:
     if: ${{ needs.dask-cuda-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: dask-cuda
@@ -460,7 +460,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: ucx-py
@@ -478,7 +478,7 @@ jobs:
     if: ${{ needs.ucx-py-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: ucx-py
@@ -496,7 +496,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cugraph-ops
@@ -514,7 +514,7 @@ jobs:
     if: ${{ needs.cugraph-ops-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cugraph-ops
@@ -532,7 +532,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cucim
@@ -550,7 +550,7 @@ jobs:
     if: ${{ needs.cucim-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cucim
@@ -568,7 +568,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: cumlprims_mg
@@ -586,7 +586,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: ucxx
@@ -604,7 +604,7 @@ jobs:
     if: ${{ needs.ucxx-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: ucxx
@@ -622,7 +622,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: wholegraph
@@ -640,7 +640,7 @@ jobs:
     if: ${{ needs.wholegraph-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: wholegraph
@@ -675,7 +675,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: rapidsai/trigger-workflow-and-wait@v1
         with:
           owner: rapidsai
           repo: docker
