@@ -36,6 +36,7 @@ jobs:
         rapidsai/cuxfilter
         rapidsai/dask-cuda
         rapidsai/docker
+        rapidsai/integration
         rapidsai/kvikio
         rapidsai/rapids-cmake
         rapidsai/raft
@@ -650,6 +651,41 @@ jobs:
           ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.wholegraph) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+  integration-test:
+    needs:
+      - get-run-info
+      - cucim-build
+      - cudf-build
+      - cugraph-build
+      - cugraph-ops-build
+      - cuml-build
+      - cumlprims_mg-build
+      - cuspatial-build
+      - cuxfilter-build
+      - dask-cuda-build
+      - kvikio-build
+      - raft-build
+      - rapids-cmake-build
+      - rmm-build
+      - ucx-py-build
+      - ucxx-build
+      - wholegraph-build
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rapidsai/trigger-workflow-and-wait@v1
+        with:
+          owner: rapidsai
+          repo: integration
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.integration) }}
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
