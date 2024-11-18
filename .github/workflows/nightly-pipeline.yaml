@@ -259,7 +259,7 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
   cuml-build:
-    needs: [get-run-info, cudf-build, raft-build, cumlprims_mg-build]
+    needs: [get-run-info, cudf-build, raft-build, cuvs-build, cumlprims_mg-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
