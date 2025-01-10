@@ -29,7 +29,6 @@ jobs:
         rapidsai/cugraph
         rapidsai/cugraph-docs
         rapidsai/cugraph-gnn
-        rapidsai/cugraph-ops
         rapidsai/cuml
         rapidsai/cumlprims_mg
         rapidsai/cuspatial
@@ -296,7 +295,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cugraph-build:
-    needs: [get-run-info, rmm-build, cudf-build, raft-build, dask-cuda-build, cugraph-ops-build]
+    needs: [get-run-info, rmm-build, cudf-build, raft-build, dask-cuda-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
@@ -547,42 +546,6 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-  cugraph-ops-build:
-    needs: [get-run-info, rmm-build, raft-build]
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
-        with:
-          owner: rapidsai
-          repo: cugraph-ops
-          github_token: ${{ secrets.WORKFLOW_TOKEN }}
-          github_user: GPUtester
-          workflow_file_name: build.yaml
-          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 120
-          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph-ops) }}
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
-  cugraph-ops-tests:
-    needs: [get-run-info, cugraph-ops-build]
-    if: ${{ needs.cugraph-ops-build.result == 'success' && !cancelled() && inputs.run_tests }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
-        with:
-          owner: rapidsai
-          repo: cugraph-ops
-          github_token: ${{ secrets.WORKFLOW_TOKEN }}
-          github_user: GPUtester
-          workflow_file_name: test.yaml
-          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 120
-          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cugraph-ops) }}
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
   cucim-build:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
@@ -638,7 +601,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   cugraph-docs-build:
-    needs: [get-run-info, cugraph-build, cugraph-gnn-build, cugraph-ops-build, nx-cugraph-build]
+    needs: [get-run-info, cugraph-build, cugraph-gnn-build, nx-cugraph-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
@@ -698,7 +661,6 @@ jobs:
       - cudf-build
       - cugraph-build
       - cugraph-gnn-build
-      - cugraph-ops-build
       - cuml-build
       - cumlprims_mg-build
       - cuspatial-build
@@ -734,7 +696,6 @@ jobs:
       - cudf-build
       - cugraph-build
       - cugraph-gnn-build
-      - cugraph-ops-build
       - cuml-build
       - cumlprims_mg-build
       - cuspatial-build
