@@ -17,6 +17,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.rapids_version }}
   cancel-in-progress: true
 
+# We intentionally allow build jobs to proceed even if their dependencies
+# failed since the upstream failures may be unrelated. This is the reason for
+# the many `if: ${{ !cancelled() }}` conditionals below. This short-circuits
+# the `needs` key, see
+# https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds.
+# See the below links for more information on the decision
+# https://github.com/rapidsai/workflows/pull/11
 jobs:
   get-run-info:
     uses: ./.github/workflows/get-run-info.yaml
