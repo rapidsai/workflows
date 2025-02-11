@@ -697,7 +697,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   integration-test:
-    needs: [integration-build]
+    needs: [get-run-info, integration-build]
     # we want to always run the integration tests to ascertain that solves
     # aren't using dated packages. See https://github.com/rapidsai/integration/pull/690.
     if: ${{ !cancelled() }}
