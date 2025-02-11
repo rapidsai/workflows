@@ -195,7 +195,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   raft-build:
-    needs: [get-run-info, rmm-build, dask-cuda-build]
+    needs: [get-run-info, rmm-build, dask-cuda-build, ucxx-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
