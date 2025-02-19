@@ -12,9 +12,9 @@ jobs:
       matrix:
         include:
           - rapids_version: "25.02"
-            run_tests: true
-          - rapids_version: "25.04"
             run_tests: false
+          - rapids_version: "25.04"
+            run_tests: true
     steps:
       - uses: actions/checkout@v3
       - name: Trigger Pipeline
