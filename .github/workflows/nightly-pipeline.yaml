@@ -87,27 +87,9 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-  rapids-cmake-build:
-    needs: [get-run-info]
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
-        with:
-          owner: rapidsai
-          repo: rapids-cmake
-          github_token: ${{ secrets.WORKFLOW_TOKEN }}
-          github_user: GPUtester
-          workflow_file_name: build.yaml
-          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
-          wait_interval: 120
-          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.rapids-cmake) }}
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
   rapids-cmake-tests:
-    needs: [get-run-info, rapids-cmake-build]
-    if: ${{ needs.rapids-cmake-build.result == 'success' && !cancelled() && inputs.run_tests }}
+    needs: [get-run-info]
+    if: ${{ !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
       - uses: rapidsai/trigger-workflow-and-wait@v1
