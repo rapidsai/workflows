@@ -749,7 +749,6 @@ jobs:
       - kvikio-build
       - nx-cugraph-build
       - raft-build
-      - rapids-cmake-build
       - rapidsmpf
       - rmm-build
       - ucx-py-build
