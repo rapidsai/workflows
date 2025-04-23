@@ -749,7 +749,7 @@ jobs:
       - kvikio-build
       - nx-cugraph-build
       - raft-build
-      - rapidsmpf
+      - rapidsmpf-build
       - rmm-build
       - ucx-py-build
       - ucxx-build
