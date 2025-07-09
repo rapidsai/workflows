@@ -67,9 +67,6 @@ jobs:
             if [ "${JUST_REPO}" = "ucx-py" ] || [ "${JUST_REPO}" = "ucxx" ]; then
               export BRANCH="${UCX_PY_BRANCH}"
             fi
-            if [ "${JUST_REPO}" = "rmm" ]; then
-              export BRANCH="main"
-            fi
 
             SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${BRANCH}")
             export SHA
