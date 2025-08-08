@@ -11,10 +11,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - rapids_version: "25.08"
-            run_tests: true
           - rapids_version: "25.10"
-            run_tests: false
+            run_tests: true
     steps:
       - uses: actions/checkout@v3
       - name: Trigger Pipeline
