@@ -50,7 +50,6 @@ jobs:
         rapidsai/raft
         rapidsai/rmm
         rapidsai/ucxx
-        rapidsai/ucx-py
   rmm-build:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
@@ -195,7 +194,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   raft-tests:
-    needs: [get-run-info, raft-build, ucx-py-build]
+    needs: [get-run-info, raft-build]
     if: ${{ needs.raft-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
@@ -463,42 +462,6 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-  ucx-py-build:
-    needs: [get-run-info]
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
-        with:
-          owner: rapidsai
-          repo: ucx-py
-          github_token: ${{ secrets.WORKFLOW_TOKEN }}
-          github_user: GPUtester
-          workflow_file_name: build.yaml
-          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucx-py-branch }}
-          wait_interval: 120
-          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.ucx-py) }}
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
-  ucx-py-tests:
-    needs: [get-run-info, ucx-py-build, cudf-build]
-    if: ${{ needs.ucx-py-build.result == 'success' && !cancelled() && inputs.run_tests }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
-        with:
-          owner: rapidsai
-          repo: ucx-py
-          github_token: ${{ secrets.WORKFLOW_TOKEN }}
-          github_user: GPUtester
-          workflow_file_name: test.yaml
-          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucx-py-branch }}
-          wait_interval: 120
-          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.ucx-py) }}
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
   cucim-build:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
@@ -583,7 +546,7 @@ jobs:
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
           workflow_file_name: build.yaml
-          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucx-py-branch }}
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucxx-branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.ucxx) }}
           propagate_failure: true
@@ -601,7 +564,7 @@ jobs:
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
           workflow_file_name: test.yaml
-          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucx-py-branch }}
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).ucxx-branch }}
           wait_interval: 120
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.ucxx) }}
           propagate_failure: true
@@ -658,7 +621,6 @@ jobs:
       - nx-cugraph-build
       - raft-build
       - rmm-build
-      - ucx-py-build
       - ucxx-build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
@@ -712,7 +674,6 @@ jobs:
       - raft-build
       - rapidsmpf-build
       - rmm-build
-      - ucx-py-build
       - ucxx-build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
