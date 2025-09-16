@@ -12,24 +12,24 @@ on:
 
 # The output object looks like this:
 # {
-#   "branch": "branch-22.10",
-#   "ucx-py-branch": "branch-0.28",
+#   "branch": "branch-25.10",
+#   "ucxx-branch": "branch-0.46",
 #   "payloads": {
 #     "rmm": {
-#        "branch": "branch-22.10",
-#        "date": "2022-09-01",
-#        "sha": "8a3a552e07fa8254c54804addcab103aea89f985"
-#      },
+#       "branch": "branch-25.10",
+#       "date": "2025-09-16",
+#       "sha": "de85ed361daa9868df15f62aff257e0cef291843"
+#     },
 #     "cudf": {
-#        "branch": "branch-22.10",
-#        "date": "2022-09-01",
-#        "sha": "dfd3d89392fa4710752e3067b16fa9a2edb28174"
-#      },
-#     "ucx-py": {
-#        "branch": "branch-0.28",
-#        "date": "2022-09-01",
-#        "sha": "daf117ca01c37508f102666b3b4999b955a16a12"
-#      }
+#       "branch": "branch-25.10",
+#       "date": "2025-09-16",
+#       "sha": "fec23dd8cc35429a4e164ea95f13f2702a7daa91"
+#     },
+#     "ucxx": {
+#       "branch": "branch-0.46",
+#       "date": "2025-09-16",
+#       "sha": "71a3af8bc473a0b87667d9a58af4476e9653ce20"
+#     }
 #   }
 # }
 
@@ -53,9 +53,9 @@ jobs:
           set -euo pipefail
           export DATE=$(date +%F)
           export RAPIDS_VERSION=${{ inputs.rapids_version }}
-          export UCX_PY_VERSION="$(curl -sL https://version.gpuci.io/rapids/${RAPIDS_VERSION})"
+          export UCXX_VERSION="$(curl -sL https://version.gpuci.io/rapids/${RAPIDS_VERSION})"
           export RAPIDS_BRANCH="branch-${RAPIDS_VERSION}"
-          export UCX_PY_BRANCH="branch-${UCX_PY_VERSION}"
+          export UCXX_BRANCH="branch-${UCXX_VERSION}"
 
           export REPOS=$(echo "${{ inputs.repos }}" | jq -Rc 'split(" ")')
 
@@ -64,8 +64,8 @@ jobs:
             export JUST_REPO=${REPO##*/} # removes GH organization
             export BRANCH="${RAPIDS_BRANCH}"
 
-            if [ "${JUST_REPO}" = "ucx-py" ] || [ "${JUST_REPO}" = "ucxx" ]; then
-              export BRANCH="${UCX_PY_BRANCH}"
+            if [ "${JUST_REPO}" = "ucxx" ]; then
+              export BRANCH="${UCXX_BRANCH}"
             fi
 
             SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${BRANCH}")
@@ -84,7 +84,7 @@ jobs:
           OBJ=$(
             jq -nc '{
               "branch": env.RAPIDS_BRANCH,
-              "ucx-py-branch": env.UCX_PY_BRANCH,
+              "ucxx-branch": env.UCXX_BRANCH,
               "payloads": (env.PAYLOADS|fromjson)
             }'
           )
