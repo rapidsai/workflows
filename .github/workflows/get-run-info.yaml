@@ -2,8 +2,12 @@ on:
   workflow_call:
     inputs:
       rapids_version:
+        description: "Version to build/test (e.g. 25.10)"
+        required: true
         type: string
       repos:
+        description: "Repositories to build/test (e.g. rapidsai/rmm rapidsai/cudf)"
+        required: true
         type: string
     outputs:
       obj:
