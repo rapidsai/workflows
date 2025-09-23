@@ -6,7 +6,7 @@ on:
         required: true
         type: string
       repos:
-        description: "Repositories to build/test (e.g. rapidsai/rmm rapidsai/cudf)"
+        description: "Space-delimited list of repositories to build/test (e.g. rapidsai/rmm rapidsai/cudf)"
         required: true
         type: string
     outputs:
