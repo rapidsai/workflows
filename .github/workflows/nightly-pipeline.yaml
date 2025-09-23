@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       rapids_version:
-        description: "Branch to build/test"
+        description: "Version to build/test (e.g. 25.10)"
         required: true
         type: string
       run_tests:
