@@ -1,11 +1,11 @@
 name: Nightly RAPIDS Pipeline
-run-name: "Nightly RAPIDS v${{ inputs.rapids_version }} Pipeline"
+run-name: "Nightly RAPIDS ${{ inputs.rapids_branch }} Branch Pipeline"
 
 on:
   workflow_dispatch:
     inputs:
-      rapids_version:
-        description: "Version to build/test (e.g. 25.10)"
+      rapids_branch:
+        description: "Branch to build/test (e.g. `main` or `release/25.12`)."
         required: true
         type: string
       run_tests:
@@ -14,7 +14,7 @@ on:
         type: boolean
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.rapids_version }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.rapids_branch }}
   cancel-in-progress: true
 
 # We intentionally allow build jobs to proceed even if their dependencies
@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/get-run-info.yaml
     secrets: inherit
     with:
-      rapids_version: "${{ inputs.rapids_version }}"
+      rapids_branch: "${{ inputs.rapids_branch }}"
       repos: >-
         rapidsai/cucim
         rapidsai/cudf

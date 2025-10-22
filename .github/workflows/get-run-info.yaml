@@ -1,12 +1,12 @@
 on:
   workflow_call:
     inputs:
-      rapids_version:
-        description: "Version to build/test (e.g. 25.10)"
+      rapids_branch:
+        description: "Branch to build/test (e.g. `main` or `release/25.12`)."
         required: true
         type: string
       repos:
-        description: "Space-delimited list of repositories to build/test (e.g. rapidsai/rmm rapidsai/cudf)"
+        description: "Space-delimited list of repositories to build/test (e.g. `rapidsai/rmm rapidsai/cudf`)"
         required: true
         type: string
     outputs:
@@ -56,10 +56,17 @@ jobs:
         run: |
           set -euo pipefail
           export DATE=$(date +%F)
-          export RAPIDS_VERSION=${{ inputs.rapids_version }}
-          export UCXX_VERSION="$(curl -sL https://version.gpuci.io/rapids/${RAPIDS_VERSION})"
-          export RAPIDS_BRANCH="branch-${RAPIDS_VERSION}"
-          export UCXX_BRANCH="branch-${UCXX_VERSION}"
+          export RAPIDS_BRANCH="${{ inputs.rapids_branch }}"
+
+          # Extract RAPIDS version from branch name if it matches release/YY.MM pattern
+          if [[ "${RAPIDS_BRANCH}" =~ ^release/([0-9]{2}\.[0-9]{2})$ ]]; then
+            RAPIDS_VERSION="${BASH_REMATCH[1]}"
+            UCXX_VERSION="$(curl -sL https://version.gpuci.io/rapids/${RAPIDS_VERSION})"
+            export UCXX_BRANCH="release/${UCXX_VERSION}"
+          else
+            # For non-release branches (e.g., main), use the same branch name for both
+            export UCXX_BRANCH="${RAPIDS_BRANCH}"
+          fi
 
           export REPOS=$(echo "${{ inputs.repos }}" | jq -Rc 'split(" ")')
 
@@ -97,11 +104,11 @@ jobs:
           echo "obj=${OBJ}" >> "${GITHUB_OUTPUT}"
       - name: Print Summary
         env:
-          RAPIDS_VERSION: ${{ inputs.rapids_version }}
+          RAPIDS_BRANCH: ${{ inputs.rapids_branch }}
           RUN_TESTS: ${{ inputs.run_tests }}
         run: |
           set -euo pipefail
-          echo "## \`${RAPIDS_VERSION}\` Nightly Run" >> "$GITHUB_STEP_SUMMARY"
+          echo "## \`${RAPIDS_BRANCH}\` Nightly Run" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "**Run tests**: \`${RUN_TESTS}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "**Run parameters**:" >> "$GITHUB_STEP_SUMMARY"
