@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - rapids_version: "25.12"
+          - rapids_branch: "main"
             run_tests: true
     steps:
       - uses: actions/checkout@v3
