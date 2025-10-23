@@ -20,5 +20,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh workflow run nightly-pipeline.yaml \
-            -f rapids_version="${{ matrix.rapids_version }}" \
+            -f rapids_branch="${{ matrix.rapids_branch }}" \
             -f run_tests="${{ matrix.run_tests }}"
