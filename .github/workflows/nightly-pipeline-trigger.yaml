@@ -13,8 +13,6 @@ jobs:
         include:
           - rapids_branch: "main"
             run_tests: true
-          - rapids_branch: "release/26.02"
-            run_tests: true
     steps:
       - uses: actions/checkout@v3
       - name: Trigger Pipeline
