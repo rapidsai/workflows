@@ -57,39 +57,50 @@ jobs:
           REPOS: ${{ inputs.repos }}
         run: |
           set -euo pipefail
-          export DATE=$(date +%F)
+          DATE=$(date +%F)
+          export DATE
 
           # Extract RAPIDS version from branch name if it matches release/YY.MM pattern
           if [[ "${RAPIDS_BRANCH}" =~ ^release/([0-9]{2}\.[0-9]{2})$ ]]; then
             RAPIDS_VERSION="${BASH_REMATCH[1]}"
+            # shellcheck disable=SC2086
             UCXX_VERSION="$(curl -sL https://version.gpuci.io/rapids/${RAPIDS_VERSION})"
-            export UCXX_BRANCH="release/${UCXX_VERSION}"
+            UCXX_BRANCH="release/${UCXX_VERSION}"
+            export UCXX_BRANCH
           else
             # For non-release branches (e.g., main), use the same branch name for both
-            export UCXX_BRANCH="${RAPIDS_BRANCH}"
+            UCXX_BRANCH="${RAPIDS_BRANCH}"
+            export UCXX_BRANCH
           fi
 
-          export REPOS=$(echo "${REPOS}" | jq -Rc 'split(" ")')
+          REPOS=$(echo "${REPOS}" | jq -Rc 'split(" ")')
+          export REPOS
 
-          export PAYLOADS='{}'
+          PAYLOADS='{}'
+          export PAYLOADS
           for REPO in $(jq -nr '(env.REPOS|fromjson) | .[]'); do
-            export JUST_REPO=${REPO##*/} # removes GH organization
-            export BRANCH="${RAPIDS_BRANCH}"
+            JUST_REPO=${REPO##*/} # removes GH organization
+            export JUST_REPO
+            BRANCH="${RAPIDS_BRANCH}"
+            export BRANCH
 
             if [ "${JUST_REPO}" = "ucxx" ]; then
-              export BRANCH="${UCXX_BRANCH}"
+              BRANCH="${UCXX_BRANCH}"
+              export BRANCH
             fi
 
             SHA=$(gh api -q '.commit.sha' "repos/${REPO}/branches/${BRANCH}")
             export SHA
 
-            export REPO_PAYLOAD=$(
+            # shellcheck disable=SC2034
+            REPO_PAYLOAD=$(
               jq -nc '{
                 "branch": env.BRANCH,
                 "date": env.DATE,
                 "sha": env.SHA
               }'
             )
+            echo REPO_PAYLOAD
             PAYLOADS=$(jq -nc '(env.PAYLOADS|fromjson) + {(env.JUST_REPO): (env.REPO_PAYLOAD|fromjson)}')
           done
 
@@ -106,14 +117,13 @@ jobs:
       - name: Print Summary
         env:
           RAPIDS_BRANCH: ${{ inputs.rapids_branch }}
-          RUN_TESTS: ${{ inputs.run_tests }}
         run: |
           set -euo pipefail
+          # shellcheck disable=SC2129
           echo "## \`${RAPIDS_BRANCH}\` Nightly Run" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Run tests**: \`${RUN_TESTS}\`" >> "$GITHUB_STEP_SUMMARY"
           echo "**Run parameters**:" >> "$GITHUB_STEP_SUMMARY"
 
           echo "\`\`\`json" >> "$GITHUB_STEP_SUMMARY"
-          echo "$(jq -n 'env.OBJ|fromjson')" >> "$GITHUB_STEP_SUMMARY"
+          jq -n 'env.OBJ|fromjson' >> "$GITHUB_STEP_SUMMARY"
           echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
