@@ -354,7 +354,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   nx-cugraph-build:
-    needs: [get-run-info, cugraph-build]
+    needs: [get-run-info]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
@@ -372,7 +372,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
   nx-cugraph-tests:
-    needs: [get-run-info, cudf-build, cugraph-build]
+    needs: [get-run-info, cudf-build, cugraph-build, nx-cugraph-build]
     if: ${{ needs.nx-cugraph-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
