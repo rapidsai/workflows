@@ -593,7 +593,6 @@ jobs:
       - cucim-build
       - cudf-build
       - cugraph-build
-      - cugraph-gnn-build
       - cuml-build
       - cuxfilter-build
       - dask-cuda-build
@@ -641,19 +640,7 @@ jobs:
   docker-build-and-test:
     needs:
       - get-run-info
-      - cucim-build
-      - cudf-build
-      - cugraph-build
-      - cugraph-gnn-build
-      - cuml-build
-      - cuxfilter-build
-      - dask-cuda-build
-      - kvikio-build
-      - nx-cugraph-build
-      - raft-build
-      - rapidsmpf-build
-      - rmm-build
-      - ucxx-build
+      - integration-build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
