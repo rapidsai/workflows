@@ -640,6 +640,9 @@ jobs:
   docker-build-and-test:
     needs:
       - get-run-info
+      # rapidsai/docker builds some cuvs-specific images
+      - cuvs-build
+      # all other RAPIDS libraries are installed via the 'rapids' metapackage
       - integration-build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
