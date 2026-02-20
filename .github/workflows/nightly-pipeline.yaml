@@ -38,6 +38,7 @@ jobs:
         rapidsai/cugraph-gnn
         rapidsai/cuml
         rapidsai/cuvs
+        rapidsai/cuvs-lucene
         rapidsai/cuxfilter
         rapidsai/dask-cuda
         rapidsai/docker
@@ -245,6 +246,43 @@ jobs:
           client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuvs) }}
           propagate_failure: true
           trigger_workflow: true
+  cuvs-lucene-build:
+    needs: [get-run-info, cuvs-build]
+    if: ${{ needs.cuvs-build.result == 'success' && !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rapidsai/trigger-workflow-and-wait@v1
+        with:
+          owner: rapidsai
+          repo: cuvs-lucene
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuvs-lucene) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+  cuvs-lucene-tests:
+    # cuvs-lucene tests currently rebuild cuVS from source, so they don't need to wait for cuvs-lucene-build to run
+    needs: [get-run-info, cuvs-build]
+    if: ${{ needs.cuvs-build.result == 'success' && !cancelled() && inputs.run_tests }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rapidsai/trigger-workflow-and-wait@v1
+        with:
+          owner: rapidsai
+          repo: cuvs-lucene
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.cuvs-lucene) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
   cuml-build:
     needs: [get-run-info, cudf-build, raft-build, cuvs-build]
     if: ${{ !cancelled() }}
