@@ -248,7 +248,7 @@ jobs:
           trigger_workflow: true
   cuvs-lucene-build:
     needs: [get-run-info, cuvs-build]
-    if: ${{ needs.cuvs-build.result == 'success' && !cancelled() }}
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: rapidsai/trigger-workflow-and-wait@v1
