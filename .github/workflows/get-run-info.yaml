@@ -100,7 +100,7 @@ jobs:
                 "sha": env.SHA
               }'
             )
-            echo REPO_PAYLOAD
+            export REPO_PAYLOAD
             PAYLOADS=$(jq -nc '(env.PAYLOADS|fromjson) + {(env.JUST_REPO): (env.REPO_PAYLOAD|fromjson)}')
           done
 
