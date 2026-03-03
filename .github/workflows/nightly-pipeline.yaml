@@ -44,6 +44,7 @@ jobs:
         rapidsai/docker
         rapidsai/integration
         rapidsai/kvikio
+        rapidsai/nvforest
         rapidsai/nx-cugraph
         rapidsai/rapids-cmake
         rapidsai/rapidsmpf
@@ -283,8 +284,44 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+  nvforest-build:
+    needs: [get-run-info, raft-build, rmm-build]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rapidsai/trigger-workflow-and-wait@v1
+        with:
+          owner: rapidsai
+          repo: cuml
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: build.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.nvforest) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+  nvforest-tests:
+    needs: [get-run-info, nvforest-build]
+    if: ${{ needs.nvforest-build.result == 'success' && !cancelled() && inputs.run_tests }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rapidsai/trigger-workflow-and-wait@v1
+        with:
+          owner: rapidsai
+          repo: cuml
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          github_user: GPUtester
+          workflow_file_name: test.yaml
+          ref: ${{ fromJSON(needs.get-run-info.outputs.obj).branch }}
+          wait_interval: 120
+          client_payload: ${{ toJSON(fromJSON(needs.get-run-info.outputs.obj).payloads.nvforest) }}
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
   cuml-build:
-    needs: [get-run-info, cudf-build, raft-build, cuvs-build]
+    needs: [get-run-info, cudf-build, nvforest-build, raft-build, cuvs-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
