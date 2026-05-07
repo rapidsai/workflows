@@ -17,6 +17,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.rapids_branch }}
   cancel-in-progress: true
 
+
+permissions: {}
+
 # We intentionally allow build jobs to proceed even if their dependencies
 # failed since the upstream failures may be unrelated. This is the reason for
 # the many `if: ${{ !cancelled() }}` conditionals below. This short-circuits
@@ -27,7 +30,8 @@ concurrency:
 jobs:
   get-run-info:
     uses: ./.github/workflows/get-run-info.yaml
-    secrets: inherit
+    secrets:
+      WORKFLOW_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
     with:
       rapids_branch: "${{ inputs.rapids_branch }}"
       repos: >-
@@ -56,7 +60,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: rmm
@@ -74,7 +78,7 @@ jobs:
     if: ${{ needs.rmm-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: rmm
@@ -92,7 +96,7 @@ jobs:
     if: ${{ !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: rapids-cmake
@@ -110,7 +114,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: kvikio
@@ -128,7 +132,7 @@ jobs:
     if: ${{ needs.kvikio-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: kvikio
@@ -145,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cudf
@@ -163,7 +167,7 @@ jobs:
     if: ${{ needs.cudf-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cudf
@@ -181,7 +185,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: raft
@@ -199,7 +203,7 @@ jobs:
     if: ${{ needs.raft-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: raft
@@ -217,7 +221,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuvs
@@ -235,7 +239,7 @@ jobs:
     if: ${{ needs.cuvs-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuvs
@@ -252,7 +256,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuvs-lucene
@@ -271,7 +275,7 @@ jobs:
     if: ${{ needs.cuvs-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuvs-lucene
@@ -289,7 +293,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: nvforest
@@ -307,7 +311,7 @@ jobs:
     if: ${{ needs.nvforest-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: nvforest
@@ -325,7 +329,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuml
@@ -343,7 +347,7 @@ jobs:
     if: ${{ needs.cuml-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuml
@@ -361,7 +365,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cugraph
@@ -379,7 +383,7 @@ jobs:
     if: ${{ needs.cugraph-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cugraph
@@ -397,7 +401,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cugraph-gnn
@@ -415,7 +419,7 @@ jobs:
     if: ${{ needs.cugraph-gnn-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cugraph-gnn
@@ -433,7 +437,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: nx-cugraph
@@ -451,7 +455,7 @@ jobs:
     if: ${{ needs.nx-cugraph-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: nx-cugraph
@@ -469,7 +473,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuxfilter
@@ -487,7 +491,7 @@ jobs:
     if: ${{ needs.cuxfilter-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cuxfilter
@@ -505,7 +509,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: dask-cuda
@@ -523,7 +527,7 @@ jobs:
     if: ${{ needs.dask-cuda-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: dask-cuda
@@ -541,7 +545,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cucim
@@ -559,7 +563,7 @@ jobs:
     if: ${{ needs.cucim-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cucim
@@ -577,7 +581,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: cugraph-docs
@@ -595,7 +599,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: ucxx
@@ -613,7 +617,7 @@ jobs:
     if: ${{ needs.ucxx-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: ucxx
@@ -631,7 +635,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: rapidsmpf
@@ -649,7 +653,7 @@ jobs:
     if: ${{ needs.rapidsmpf-build.result == 'success' && !cancelled() && inputs.run_tests }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: rapidsmpf
@@ -679,7 +683,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: integration
@@ -699,7 +703,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: integration
@@ -722,7 +726,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: rapidsai/trigger-workflow-and-wait@v1
+      - uses: rapidsai/trigger-workflow-and-wait@1cd9c92f066afd29d5a9169f45dbf8d42e2a3e99 # v1
         with:
           owner: rapidsai
           repo: docker

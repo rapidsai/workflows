@@ -5,6 +5,8 @@ on:
   schedule:
     - cron: "0 5 * * *" # 5am UTC / 1am EST
 
+permissions: {}
+
 jobs:
   trigger-pipeline:
     runs-on: ubuntu-latest
@@ -14,7 +16,9 @@ jobs:
           - rapids_branch: "main"
             run_tests: true
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Trigger Pipeline
         env:
           GH_TOKEN: ${{ github.token }}
