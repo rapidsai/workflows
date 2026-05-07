@@ -13,6 +13,9 @@ on:
       obj:
         description: "A JSON object which includes the relevant information for a particular workflow run."
         value: ${{ jobs.run.outputs.obj }}
+    secrets:
+      WORKFLOW_TOKEN:
+        required: true
 
 # The output object looks like this:
 # {

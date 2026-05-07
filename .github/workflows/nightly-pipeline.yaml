@@ -30,7 +30,8 @@ permissions: {}
 jobs:
   get-run-info:
     uses: ./.github/workflows/get-run-info.yaml
-    secrets: inherit
+    secrets:
+      WORKFLOW_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
     with:
       rapids_branch: "${{ inputs.rapids_branch }}"
       repos: >-
