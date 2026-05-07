@@ -41,6 +41,8 @@ defaults:
   run:
     shell: bash
 
+permissions: {}
+
 jobs:
   run:
     runs-on: ubuntu-latest

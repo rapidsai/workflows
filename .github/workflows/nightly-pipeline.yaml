@@ -17,6 +17,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.inputs.rapids_branch }}
   cancel-in-progress: true
 
+
+permissions: {}
+
 # We intentionally allow build jobs to proceed even if their dependencies
 # failed since the upstream failures may be unrelated. This is the reason for
 # the many `if: ${{ !cancelled() }}` conditionals below. This short-circuits
