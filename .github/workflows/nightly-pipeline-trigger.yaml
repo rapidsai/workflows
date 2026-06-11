@@ -13,8 +13,6 @@ jobs:
         include:
           - rapids_branch: "main"
             run_tests: true
-          - rapids_branch: "release/26.06"
-            run_tests: true
     permissions:
       contents: read
       actions: write
