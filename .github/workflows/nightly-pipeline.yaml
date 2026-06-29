@@ -46,7 +46,7 @@ jobs:
         rapidsai/cugraph-gnn
         rapidsai/cuml
         NVIDIA/cuvs
-        rapidsai/cuvs-lucene
+        NVIDIA/cuvs-lucene
         rapidsai/dask-cuda
         rapidsai/docker
         rapidsai/integration
@@ -55,7 +55,7 @@ jobs:
         rapidsai/nx-cugraph
         rapidsai/rapids-cmake
         rapidsai/rapidsmpf
-        rapidsai/raft
+        NVIDIA/raft
         rapidsai/rmm
         rapidsai/ucxx
   rmm-build:
@@ -190,7 +190,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: raft
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
@@ -208,7 +208,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: raft
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
@@ -261,7 +261,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: cuvs-lucene
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
@@ -280,7 +280,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: cuvs-lucene
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
