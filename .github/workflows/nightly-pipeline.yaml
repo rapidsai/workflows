@@ -62,8 +62,13 @@ jobs:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: rmm
@@ -116,8 +121,13 @@ jobs:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: kvikio
@@ -151,8 +161,13 @@ jobs:
     needs: [get-run-info, rmm-build, dask-cuda-build, kvikio-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: cudf
@@ -187,8 +202,13 @@ jobs:
     needs: [get-run-info, rmm-build, dask-cuda-build, ucxx-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: NVIDIA
           repo: raft
@@ -223,8 +243,13 @@ jobs:
     needs: [get-run-info, rmm-build, raft-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: NVIDIA
           repo: cuvs
@@ -258,8 +283,13 @@ jobs:
     needs: [get-run-info, cuvs-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: NVIDIA
           repo: cuvs-lucene
@@ -295,8 +325,13 @@ jobs:
     needs: [get-run-info, raft-build, rmm-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: nvforest
@@ -331,8 +366,13 @@ jobs:
     needs: [get-run-info, cudf-build, raft-build, cuvs-build, nvforest-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: cuml
@@ -367,8 +407,13 @@ jobs:
     needs: [get-run-info, rmm-build, cudf-build, raft-build, dask-cuda-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: cugraph
@@ -403,8 +448,13 @@ jobs:
     needs: [get-run-info, cugraph-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: cugraph-gnn
@@ -439,8 +489,13 @@ jobs:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: nx-cugraph
@@ -475,8 +530,13 @@ jobs:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: dask-cuda
@@ -511,8 +571,13 @@ jobs:
     needs: [get-run-info]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: cucim
@@ -547,8 +612,13 @@ jobs:
     needs: [get-run-info, cugraph-build, cugraph-gnn-build, nx-cugraph-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: cugraph-docs
@@ -565,8 +635,13 @@ jobs:
     needs: [get-run-info, rmm-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: ucxx
@@ -601,8 +676,13 @@ jobs:
     needs: [get-run-info, rmm-build, cudf-build, dask-cuda-build, ucxx-build]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: rapidsmpf
@@ -650,8 +730,13 @@ jobs:
       - ucxx-build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: integration
@@ -693,8 +778,13 @@ jobs:
       - integration-build
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    outputs:
+      child_workflow_id: ${{ steps.child-workflow.outputs.workflow_id }}
+      child_workflow_url: ${{ steps.child-workflow.outputs.workflow_url }}
+      child_workflow_conclusion: ${{ steps.child-workflow.outputs.conclusion }}
     steps:
-      - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
+      - id: child-workflow
+        uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
           owner: rapidsai
           repo: docker
@@ -707,3 +797,42 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+  release-build-receipt:
+    needs:
+      - get-run-info
+      - rmm-build
+      - kvikio-build
+      - cudf-build
+      - raft-build
+      - cuvs-build
+      - cuvs-lucene-build
+      - nvforest-build
+      - cuml-build
+      - cugraph-build
+      - cugraph-gnn-build
+      - nx-cugraph-build
+      - dask-cuda-build
+      - cucim-build
+      - cugraph-docs-build
+      - ucxx-build
+      - rapidsmpf-build
+      - integration-build
+      - docker-build-and-test
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out receipt writer
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Write release build receipt
+        env:
+          RELEASE_BUILD_NEEDS: ${{ toJSON(needs) }}
+          RELEASE_BUILD_RUN_INFO: ${{ needs.get-run-info.outputs.obj }}
+        run: bash .github/scripts/write-release-build-receipt.sh release-build-receipt.json
+      - name: Upload release build receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-build-receipt
+          path: release-build-receipt.json
+          if-no-files-found: error
