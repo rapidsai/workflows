@@ -44,7 +44,7 @@ jobs:
         rapidsai/cugraph
         rapidsai/cugraph-docs
         rapidsai/cugraph-gnn
-        rapidsai/cuml
+        NVIDIA/cuml
         NVIDIA/cuvs
         NVIDIA/cuvs-lucene
         rapidsai/dask-cuda
@@ -334,7 +334,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: cuml
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
@@ -352,7 +352,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: cuml
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
