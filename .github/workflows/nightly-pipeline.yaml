@@ -40,7 +40,7 @@ jobs:
       rapids_branch: "${{ inputs.rapids_branch }}"
       repos: >-
         rapidsai/cucim
-        rapidsai/cudf
+        NVIDIA/cudf
         rapidsai/cugraph
         rapidsai/cugraph-docs
         rapidsai/cugraph-gnn
@@ -154,7 +154,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: cudf
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
@@ -172,7 +172,7 @@ jobs:
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main
         with:
-          owner: rapidsai
+          owner: NVIDIA
           repo: cudf
           github_token: ${{ secrets.WORKFLOW_TOKEN }}
           github_user: GPUtester
