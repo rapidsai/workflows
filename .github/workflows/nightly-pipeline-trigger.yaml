@@ -12,8 +12,10 @@ jobs:
       matrix:
         include:
           - rapids_branch: "main"
+            workflow_ref: "main"
             run_tests: true
           - rapids_branch: "release/26.12"
+            workflow_ref: "ci/nightly-release-26.12"
             run_tests: true
     permissions:
       contents: read
@@ -27,5 +29,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh workflow run nightly-pipeline.yaml \
+            --ref "${{ matrix.workflow_ref }}" \
             -f rapids_branch="${{ matrix.rapids_branch }}" \
             -f run_tests="${{ matrix.run_tests }}"
