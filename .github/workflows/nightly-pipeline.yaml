@@ -399,7 +399,7 @@ jobs:
           wait_workflow: true
   nx-cugraph-build:
     needs: [get-run-info]
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && fromJSON(needs.get-run-info.outputs.obj).payloads.nx-cugraph != null }}
     runs-on: ubuntu-latest
     steps:
       - uses: rapidsai/shared-actions/trigger-workflow-and-wait@main

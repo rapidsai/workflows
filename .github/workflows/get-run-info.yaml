@@ -85,6 +85,12 @@ jobs:
           export PAYLOADS
           for REPO in $(jq -nr '(env.REPOS|fromjson) | .[]'); do
             JUST_REPO=${REPO##*/} # removes GH organization
+            # nx-cugraph's final release is 26.12. Do not resolve or dispatch
+            # main or newer release branches for a library that no longer ships.
+            if [[ "${JUST_REPO}" == "nx-cugraph" ]] &&
+               ! [[ "${RAPIDS_BRANCH}" =~ ^release/[0-9]{2}\.[0-9]{2}$ && "${RAPIDS_BRANCH}" < "release/27.02" ]]; then
+              continue
+            fi
             export JUST_REPO
             BRANCH="${RAPIDS_BRANCH}"
             export BRANCH
